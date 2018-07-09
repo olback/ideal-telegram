@@ -22,6 +22,10 @@
     border-radius: 3px;
 }
 
+::-webkit-scrollbar-thumb:hover {
+    background-color: #bbb;
+}
+
 html,
 body {
     padding: 0;
@@ -112,6 +116,10 @@ h1 {
 
 .friend.active:hover {
     color: #555;
+}
+
+.friend.online {
+    color: green !important;
 }
 
 .message:hover, .friend:hover {

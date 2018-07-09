@@ -7,7 +7,9 @@ const socket = io.connect('http://localhost:5000');
 let online = [];
 let selected = null;
 
-// Define functions
+/*
+ *  Define functions
+ */
 function toast(msg, time = 5000) {
 
     const dialog = document.getElementById('toast');
@@ -48,9 +50,18 @@ function friendsList(username = null) {
     for (let i = 0; i < a.length; i++) {
 
         if (a[i].username === username) {
-            fl.innerHTML += `<div class="friend active">${a[i].username}</div>`;
+            if (online.indexOf(a[i].username) > -1) {
+                fl.innerHTML += `<div class="friend active online">${a[i].username}</div>`;
+            } else {
+                fl.innerHTML += `<div class="friend active">${a[i].username}</div>`;
+            }
         } else {
-            fl.innerHTML += `<div onclick="selectFriend('${a[i].username}')"class="friend">${a[i].username}</div>`;
+            // fl.innerHTML += `<div onclick="selectFriend('${a[i].username}')"class="friend">${a[i].username}</div>`;
+            if (online.indexOf(a[i].username) > -1) {
+                fl.innerHTML += `<div class="friend online" onclick="selectFriend('${a[i].username}')">${a[i].username}</div>`;
+            } else {
+                fl.innerHTML += `<div class="friend" onclick="selectFriend('${a[i].username}')">${a[i].username}</div>`;
+            }
         }
     }
 
@@ -86,6 +97,8 @@ function selectFriend(username = null) {
         }
 
     }
+
+    renderChat(username);
 
 }
 
@@ -141,9 +154,6 @@ async function sendMessage(to, message) {
         message: null
     }
 
-    // const passphrase = window.localStorage.getItem('pgp.passphrase');
-    // const privKeyObj = openpgp.key.readArmored(window.localStorage.getItem('pgp.private')).keys[0];
-    // await privKeyObj.decrypt(passphrase);
 
     let friend = null;
 
@@ -157,8 +167,6 @@ async function sendMessage(to, message) {
         }
 
     }
-
-    console.log(friend);
 
     const options = {
         data: message,
@@ -191,6 +199,9 @@ function notify(title, body = undefined) {
     });
 }
 
+/*
+ *  Event listeners
+ */
 document.getElementById('send').onclick = () => {
 
     const i = document.getElementById('new-message');
@@ -205,11 +216,20 @@ document.getElementById('send').onclick = () => {
     }
 
     sendMessage(selected, i.value);
+    Encm.sessionStoreMessage(selected, window.localStorage.getItem('username'), i.value);
     i.value = '';
 
 }
 
-// Add event listeners
+document.getElementById('new-message').onkeypress = e => {
+
+    if (e.code === 'Enter') {
+
+        document.getElementById('send').onclick();
+
+    }
+}
+
 document.getElementById('open-delete').onclick = () => {
 
     const m = document.getElementById('delete-friend');
@@ -223,7 +243,6 @@ document.getElementById('open-delete').onclick = () => {
         if (i.value !== '') {
 
             const r = Encm.delFriend(i.value);
-            console.log(r);
 
             toast(r.msg);
 
@@ -326,14 +345,14 @@ document.getElementById('open-import-json').onclick = () => {
 }
 document.getElementById('add-friend').onclick = document.getElementById('open-import-json').onclick;
 
-// Code to run on load
+/*
+ *  Run on load
+ */
 
-// friendsList();
 selectFriend();
 renderChat(selected);
 
 socket.on('message', async(data) => {
-    console.log(data);
 
     const passphrase = window.localStorage.getItem('pgp.passphrase');
     const privKeyObj = openpgp.key.readArmored(window.localStorage.getItem('pgp.private')).keys[0];
@@ -347,6 +366,7 @@ socket.on('message', async(data) => {
     openpgp.decrypt(options).then(plaintext => {
         //console.log(plaintext.data);
         appendChat(data.from, plaintext.data);
+        Encm.sessionStoreMessage(data.from, data.from, plaintext.data);
         return plaintext.data; 
     })
 
@@ -354,7 +374,14 @@ socket.on('message', async(data) => {
 
 socket.on('online', data => {
 
-    console.log('online:', data);
+    friendsList(selected);
+    online = data;
+
+});
+
+socket.on('err', data => {
+
+    toast(data.msg);
 
 });
 
@@ -390,6 +417,7 @@ if ('serviceWorker' in navigator) {
     });
 }
 
+// Make sure to let the server know we're alive
 setInterval(() => {
     socket.emit('login', window.localStorage.getItem('username'));
 }, 1E3) // 6E4

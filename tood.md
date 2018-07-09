@@ -1,2 +1,0 @@
-preserve chat
-online friends

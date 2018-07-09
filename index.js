@@ -30,7 +30,7 @@ io.on('connection', socket => {
     socket.on('login', data => {
         // console.log('clients: ' + JSON.stringify(clients));
         clients[data] = {
-            'socket': socket.id
+            socket: socket.id
         };
 
         let o = [];
@@ -44,11 +44,13 @@ io.on('connection', socket => {
     });
 
     socket.on('message', data => {
-        console.log('Sending: ' + data.message + ' to ' + data.to);
+        // console.log('Sending: ' + data.message + ' to ' + data.to);
         if (clients[data.to]) {
             io.sockets.connected[clients[data.to].socket].emit('message', data);
         } else {
-            console.log('User does not exist: ' + data.to);
+            io.sockets.connected[clients[data.from].socket].emit('err', {
+                msg: `User ${data.to} is not online`
+            });
         }
     });
 

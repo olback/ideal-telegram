@@ -196,6 +196,8 @@ function notify(title, body = undefined) {
                     tag: 'encm'
                 });
             });
+            // Play sound
+            new Audio('/sounds/notif.ogg').play();
         }
     });
 }
@@ -368,6 +370,7 @@ socket.on('message', async(data) => {
         //console.log(plaintext.data);
         appendChat(data.from, plaintext.data);
         Encm.sessionStoreMessage(data.from, data.from, plaintext.data);
+        notify(`New message from ${data.from}`, plaintext.data);
         return plaintext.data; 
     })
 

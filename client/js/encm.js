@@ -43,7 +43,6 @@ class Encm {
 
             if (a[i].username === username) {
 
-                console.log(i, username);
                 a.splice(i, 1);
                 window.localStorage.setItem('friends', JSON.stringify(a));
                 window.sessionStorage.removeItem(username);
@@ -124,8 +123,6 @@ class Encm {
         }
 
         window.sessionStorage.setItem(store, JSON.stringify(a));
-
-        console.log(a);
 
     }
 

@@ -2,7 +2,7 @@
  *  encm © 2018
  */
 
-const socket = io.connect('http://localhost:5000');
+const socket = io.connect('https://chat.olback.net');
 
 let online = [];
 let selected = null;

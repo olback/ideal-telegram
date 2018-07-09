@@ -4,11 +4,13 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <link rel="shortcut icon" href="/img/icon.png" />
         <link rel="stylesheet" href="/css/main.css" />
+        <link rel="manifest" href="/manifest.json" />
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous" />
         <script src="/socket.io/socket.io.js"></script>
         <script src="/js/openpgp.min.js"></script>
-        <script src="js/encm.min.js"></script>
+        <script src="js/encm.js"></script>
         <title>Encrypted Messages</title>
     </head>
     <body>
@@ -18,35 +20,19 @@
                 <section>
                     <h1 id="h1-name">Chat</h1>
                     <div id="chat-output">
-                        <div class="message"><span>olback</span>message</div>
-                        <div class="message"><span>olback</span>message</div>
-                        <div class="message"><span>olback</span>message</div>
-                        <div class="message"><span>olback</span>message</div>
-                        <div class="message"><span>olback</span>message</div>
-                        <div class="message"><span>olback</span>message</div>
-                        <div class="message"><span>olback</span>message</div>
-                        <div class="message"><span>olback</span>message</div>
-                        <div class="message"><span>olback</span>message message message message message message message message message message message message message message message message message message message message message</div>
-                        <div class="message"><span>olback</span>message</div>
-                        <div class="message"><span>olback</span>message</div>
-                        <div class="message"><span>olback</span>message</div>
-                        <div class="message"><span>olback</span>message</div>
-                        <div class="message"><span>olback</span>message</div>
-                        <div class="message"><span>olback</span>message</div>
-                        <div class="message"><span>olback</span>message</div>
+                        <!-- <div class="message"><span>username</span>message</div> -->
+                        <div class="chat-empty">No messages</div>
                     </div>
                     <input id="new-message" type="text" placeholder="Message..." />
                 </section>
-                <button>Send</button>
+                <button id="send">Send</button>
             </div>
 
             <div class="friends">
                 <section>
                     <h1>Friends</h1>
                     <div id="friends-list">
-                        <!-- <div class="friend active">Test 1</div>
-                        <div class="friend">Test 2</div>
-                        <div class="friend">Test 3</div> -->
+                        <!-- <div class="friend active">Test 1</div> -->
                     </div>
                     <div class="friend" id="add-friend">Add friend</div>
                 </section>
@@ -80,6 +66,6 @@
             <button id="delete-button">Close</button>
         </div>
 
-        <script src="js/app.min.js"></script>
+        <script src="js/app.js"></script>
     </body>
 </html>

@@ -35,6 +35,7 @@ main {
     display: block;
     margin: auto;
     margin-bottom: 80px;
+    margin-top: -70px;
 }
 
 div.chat {
@@ -82,10 +83,6 @@ h1 {
     padding: 0 1em;
 }
 
-#friends-list {
-    height: auto;
-}
-
 #add-friend {
     padding: 1em;
     border-top: 1px solid var(--border-color);
@@ -96,6 +93,12 @@ h1 {
     transition: 0.2s color ease-in-out;
     color: #555;
     border-bottom: 1px solid var(--border-color);
+}
+
+.chat-empty {
+    padding: 1em 0;
+    color: #555;
+    font-style: italic;
 }
 
 .friend {
@@ -218,12 +221,18 @@ dialog {
 }
 
 @media all and (max-width: 1000px) {
+    main {
+        margin-top: 0;
+    }
     div.chat, div.friends {
         float: none;
         max-width: 600px;
     }
     div.friends>section {
         border-left: 1px solid var(--border-color);
+    }
+    #friends-list {
+        height: auto !important;
     }
 }
 

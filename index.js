@@ -27,20 +27,44 @@ io.on('connection', socket => {
 
     console.log('Connected', socket.id);
 
-    socket.on('login', function (data) {
-        clients[data.username] = {
-            "socket": socket.id
+    socket.on('login', data => {
+        // console.log('clients: ' + JSON.stringify(clients));
+        clients[data] = {
+            'socket': socket.id
         };
+
+        let o = [];
+
+        for(let c in clients) {
+            o.push(c);
+        }
+
+        io.sockets.connected[clients[data].socket].emit('online', o);
+
     });
 
-    socket.on('chat', data => {
-        console.log(data);
-        io.sockets.emit('chat', data);
+    socket.on('message', data => {
+        console.log('Sending: ' + data.message + ' to ' + data.to);
+        if (clients[data.to]) {
+            io.sockets.connected[clients[data.to].socket].emit('message', data);
+        } else {
+            console.log('User does not exist: ' + data.to);
+        }
+    });
+
+    socket.on('disconnect', () => {
+        for (let name in clients) {
+            if (clients[name].socket === socket.id) {
+                console.log(name + ' disconnected');
+                delete clients[name];
+                break;
+            }
+        }
     });
 
 
-    socket.on('typing', name => {
-        socket.broadcast.emit('typing', name);
-    })
+    // socket.on('typing', name => {
+    //     socket.broadcast.emit('typing', name);
+    // });
 
 })

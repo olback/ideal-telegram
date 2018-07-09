@@ -1,0 +1,21 @@
+{
+    "short_name": "Encm",
+    "name": "Encrypted Messages",
+    "icons": [{
+            "src": "/img/icon-192.png",
+            "type": "image/png",
+            "sizes": "192x192"
+        },
+        {
+            "src": "/img/icon-512.png",
+            "type": "image/png",
+            "sizes": "512x512"
+        }
+    ],
+    "start_url": "/index.html?source=pwa",
+    "background_color": "#fff",
+    "display": "standalone",
+    "orientation": "portrait",
+    "scope": "/",
+    "theme_color": "#08f"
+}

@@ -2,7 +2,8 @@
  *  encm © 2018
  */
 
-const socket = io.connect('https://chat.olback.net');
+// const socket = io.connect('https://chat.olback.net');
+const socket = io.connect(window.location.origin);
 
 let online = [];
 let selected = null;

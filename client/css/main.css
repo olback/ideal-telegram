@@ -119,7 +119,7 @@ h1 {
 }
 
 .friend.online {
-    color: green !important;
+    color: #0f0 !important;
 }
 
 .message:hover, .friend:hover {

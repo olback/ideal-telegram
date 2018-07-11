@@ -202,6 +202,71 @@ function notify(title, body = undefined) {
     });
 }
 
+function setDarkTheme(b) {
+
+    if(b) {
+
+        // --backgound-color-main: #1f1f1f;
+        // --background-color-secondary: #333;
+        // --border-color: #222;
+        // --text-color-primary: #ddd;
+        // --text-color-primary-hover: #fff; 
+        // --text-color-secondary: #ccc;
+        // --text-bcolor-secondary-hover: #111;
+        // --dialog-background-color: #111;
+        // --input-bcolor: #565656;
+
+        document.documentElement.style.setProperty('--background-color-main', '#1f1f1f');
+        document.documentElement.style.setProperty('--background-color-secondary', '#333');
+        document.documentElement.style.setProperty('--border-color', '#222');
+        document.documentElement.style.setProperty('--text-color-primary', '#ddd');
+        document.documentElement.style.setProperty('--text-color-primary-hover', '#fff');
+        document.documentElement.style.setProperty('--text-color-secondary', '#ccc');
+        document.documentElement.style.setProperty('--text-bcolor-secondary-hover', '#111');
+        document.documentElement.style.setProperty('--dialog-background-color', '#111');
+        document.documentElement.style.setProperty('--input-bcolor', '#565656');
+
+        document.getElementById('theme-switch').classList.replace('fa-moon', 'fa-sun');
+        // window.localStorage.setItem('dark', true);
+        // window.localStorage.settings.dark = true;
+        let s = JSON.parse(window.localStorage.getItem('settings'));
+        s.dark = true;
+        window.localStorage.setItem('settings', JSON.stringify(s));
+        
+
+    } else {
+
+        // --background-color-main: #fff;
+        // --background-color-secondary: #f9f9f9;
+        // --border-color: #e9e9e9;
+        // --text-color-primary: #333;
+        // --text-color-primary-hover: #111;
+        // --text-color-secondary: #555;
+        // --text-bcolor-secondary-hover: #ccc;
+        // --dialog-background-color: #555;
+        // --input-bcolor: #fff;
+
+        document.documentElement.style.setProperty('--background-color-main', '#fff');
+        document.documentElement.style.setProperty('--background-color-secondary', '#f9f9f9');
+        document.documentElement.style.setProperty('--border-color', '#e9e9e9');
+        document.documentElement.style.setProperty('--text-color-primary', '#333');
+        document.documentElement.style.setProperty('--text-color-primary-hover', '#111');
+        document.documentElement.style.setProperty('--text-color-secondary', '#555');
+        document.documentElement.style.setProperty('--text-bcolor-secondary-hover', '#ccc');
+        document.documentElement.style.setProperty('--dialog-background-color', '#555');
+        document.documentElement.style.setProperty('--input-bcolor', '#fff');
+
+        // document.getElementById('theme-switch').classList.replace('fa-moon', 'fa-sun');
+        document.getElementById('theme-switch').classList.replace('fa-sun', 'fa-moon');
+        // window.localStorage.setItem('dark', false);
+        let s = JSON.parse(window.localStorage.getItem('settings'));
+        s.dark = false;
+        window.localStorage.setItem('settings', JSON.stringify(s));
+
+    }
+
+}
+
 /*
  *  Event listeners
  */
@@ -348,6 +413,22 @@ document.getElementById('open-import-json').onclick = () => {
 }
 document.getElementById('add-friend').onclick = document.getElementById('open-import-json').onclick;
 
+document.getElementById('theme-switch').onclick = (e) => {
+
+    if (e.path[0].classList.contains('fa-sun')) {
+
+        setDarkTheme(false);
+
+    } else {
+
+        setDarkTheme(true);
+
+    }
+
+    // setDarkTheme(!window.localStorage.getItem('dark'));
+
+}
+
 /*
  *  Run on load
  */
@@ -425,3 +506,18 @@ if ('serviceWorker' in navigator) {
 setInterval(() => {
     socket.emit('login', window.localStorage.getItem('username'));
 }, 1E3) // 6E4
+
+// Handle theme settings
+if (window.localStorage.getItem('settings') === null) {
+
+    window.localStorage.setItem('settings', JSON.stringify({
+        dark: false
+    }));
+
+} else {
+
+    let s = JSON.parse(window.localStorage.getItem('settings'));
+
+    setDarkTheme(s.dark);
+
+}

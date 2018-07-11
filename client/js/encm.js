@@ -136,7 +136,15 @@ if (window.localStorage.getItem('friends') === null) {
 
 if (window.localStorage.getItem('username') === null) {
 
-    window.localStorage.setItem('username', prompt('Enter a username:'));
+    let p = null;
+
+    while(!p) {
+
+        p = prompt('Enter a username:');
+
+    }
+
+    window.localStorage.setItem('username', p);
 
 }
 

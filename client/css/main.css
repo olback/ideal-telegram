@@ -2,12 +2,32 @@
  *  encm © 2018
  */
 
+/* Light theme */
 :root {
-    /* --primary-color: #575ed8; */
     --primary-color: #08f;
-    --background-color: #f9f9f9;
+    --background-color-main: #fff;
+    --background-color-secondary: #f9f9f9;
     --border-color: #e9e9e9;
+    --text-color-primary: #333;
+    --text-color-primary-hover: #111;
+    --text-color-secondary: #555;
+    --text-bcolor-secondary-hover: #ccc;
+    --dialog-background-color: #555;
+    --input-bcolor: #fff;
 }
+
+/* Dark theme */
+/* :root {
+    --backgound-color-main: #1f1f1f;
+    --background-color-secondary: #333;
+    --border-color: #222;
+    --text-color-primary: #ddd;
+    --text-color-primary-hover: #fff; 
+    --text-color-secondary: #ccc;
+    --text-bcolor-secondary-hover: #111;
+    --dialog-background-color: #111;
+    --input-bcolor: #565656;
+} */
 
 ::-webkit-scrollbar {
     width: 5px;
@@ -30,8 +50,9 @@ html,
 body {
     padding: 0;
     margin: 0;
-    /* background-color: var(--background-color); */
+    /* background-color: var(--background-color-secondary); */
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    background-color: var(--background-color-main);
 }
 
 main {
@@ -60,10 +81,7 @@ div.friends {
 section {
     border: 1px solid var(--border-color);
     border-radius: 0;
-    /* border-bottom: none;
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0; */
-    background-color: var(--background-color);
+    background-color: var(--background-color-secondary);
 }
 
 div.friends>section {
@@ -76,14 +94,14 @@ h1 {
     font-size: 20pt;
     border-bottom: 1px solid var(--border-color);
     color: var(--primary-color);
-    background-color: #fff;
+    background-color: var(--background-color-secondary);
 }
 
 #chat-output, #friends-list {
     /* min-height: 300px; */
     height: 500px;
     overflow-y: auto;
-    background: #f9f9f9;
+    background: var(--background-color-secondary);
     padding: 0 1em;
 }
 
@@ -95,13 +113,13 @@ h1 {
 .message, .friend {
     padding: 1em 0;
     transition: 0.2s color ease-in-out;
-    color: #555;
+    color: var(--text-color-primary);
     border-bottom: 1px solid var(--border-color);
 }
 
 .chat-empty {
     padding: 1em 0;
-    color: #555;
+    color: var(--text-color-primary);
     font-style: italic;
 }
 
@@ -115,15 +133,15 @@ h1 {
 }
 
 .friend.active:hover {
-    color: #555;
+    color: var(--text-color-primary);
 }
 
 .friend.online {
     color: #0f0 !important;
 }
 
-.message:hover, .friend:hover {
-    color: #111;
+.friend:hover {
+    color: var(--text-color-primary-hover);
 }
 
 .message>span {
@@ -146,6 +164,8 @@ input {
     width: calc(100% - 2em);
     font-size: 12pt;
     outline: none;
+    background-color: var(--input-bcolor);
+    color: var(--text-color-primary);
 }
 
 button {
@@ -184,18 +204,18 @@ nav>i {
     transition: background-color 0.2s ease-in-out;
     /* width: 19px; */
     width: 1em;
-    color: #555;
+    color: var(--text-color-secondary);
     cursor: pointer;
 }
 
 nav>i:hover {
-    background-color: #ccc;
+    background-color: var(--text-bcolor-secondary-hover);
 }
 
 dialog {
-    background-color: #555;
+    background-color: var(--dialog-background-color);
     border: none;
-    color: #fff;
+    color: var(--text-color-primary);
     position: fixed;
     bottom: 30px;
     border-radius: 5px;
@@ -211,7 +231,7 @@ dialog {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: #f9f9f9;
+    background-color: var(--background-color-secondary);
     width: 400px;
     max-width: 90%;
     border: 1px solid var(--border-color);
@@ -226,6 +246,7 @@ dialog {
 #modal>p>code {
     word-break: break-all;
     overflow-wrap: break-word;
+    color: var(--text-color-primary);
 }
 
 @media all and (max-width: 1000px) {

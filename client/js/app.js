@@ -52,16 +52,16 @@ function friendsList(username = null) {
 
         if (a[i].username === username) {
             if (online.indexOf(a[i].username) > -1) {
-                fl.innerHTML += `<div class="friend active online">${a[i].username}</div>`;
+                fl.innerHTML += `<div class="friend active online">${escapeHtml(a[i].username)}</div>`;
             } else {
-                fl.innerHTML += `<div class="friend active">${a[i].username}</div>`;
+                fl.innerHTML += `<div class="friend active">${escapeHtml(a[i].username)}</div>`;
             }
         } else {
             // fl.innerHTML += `<div onclick="selectFriend('${a[i].username}')"class="friend">${a[i].username}</div>`;
             if (online.indexOf(a[i].username) > -1) {
-                fl.innerHTML += `<div class="friend online" onclick="selectFriend('${a[i].username}')">${a[i].username}</div>`;
+                fl.innerHTML += `<div class="friend online" onclick="selectFriend('${escapeHtml(a[i].username)}')">${escapeHtml(a[i].username)}</div>`;
             } else {
-                fl.innerHTML += `<div class="friend" onclick="selectFriend('${a[i].username}')">${a[i].username}</div>`;
+                fl.innerHTML += `<div class="friend" onclick="selectFriend('${escapeHtml(a[i].username)}')">${escapeHtml(a[i].username)}</div>`;
             }
         }
     }
@@ -79,7 +79,7 @@ function selectFriend(username = null) {
 
             if (a[i].username === username) {
                 friendsList(a[i].username);
-                h1.innerHTML = a[i].username;
+                h1.innerHTML = escapeHtml(a[i].username);
                 selected = a[i].username;
             }
 
@@ -89,7 +89,7 @@ function selectFriend(username = null) {
 
         if (a.length > 0) {
             friendsList(a[0].username);
-            h1.innerHTML = a[0].username;
+            h1.innerHTML = escapeHtml(a[0].username);
             selected = a[0].username;
         } else {
             friendsList();
@@ -133,7 +133,7 @@ function appendChat(username, message) {
 
     const co = document.getElementById('chat-output');
 
-    co.innerHTML += `<div class="message"><span>${username}</span>${message}</div>`;
+    co.innerHTML += `<div class="message"><span>${escapeHtml(username)}</span>${escapeHtml(message)}</div>`;
     co.scrollTo({
         top: co.scrollHeight + 100,
         behavior: 'smooth'
@@ -154,7 +154,6 @@ async function sendMessage(to, message) {
         from: from,
         message: null
     }
-
 
     let friend = null;
 
@@ -266,6 +265,15 @@ function setDarkTheme(b) {
     }
 
 }
+
+function escapeHtml(unsafe) {
+    return unsafe
+         .replace(/&/g, "&amp;")
+         .replace(/</g, "&lt;")
+         .replace(/>/g, "&gt;")
+         .replace(/"/g, "&quot;")
+         .replace(/'/g, "&#039;");
+ }
 
 /*
  *  Event listeners

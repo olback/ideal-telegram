@@ -413,9 +413,11 @@ document.getElementById('open-import-json').onclick = () => {
 }
 document.getElementById('add-friend').onclick = document.getElementById('open-import-json').onclick;
 
-document.getElementById('theme-switch').onclick = (e) => {
+document.getElementById('theme-switch').onclick = e => {
 
-    if (e.path[0].classList.contains('fa-sun')) {
+    console.log(e);
+
+    if (e.target.classList.contains('fa-sun')) {
 
         setDarkTheme(false);
 

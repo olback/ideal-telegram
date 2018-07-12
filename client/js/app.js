@@ -423,8 +423,6 @@ document.getElementById('add-friend').onclick = document.getElementById('open-im
 
 document.getElementById('theme-switch').onclick = e => {
 
-    console.log(e);
-
     if (e.target.classList.contains('fa-sun')) {
 
         setDarkTheme(false);

@@ -48,6 +48,7 @@ function friendsList(username = null) {
 
     fl.innerHTML = '';
 
+    // TODO: Clean up this mess...
     let a = JSON.parse(window.localStorage.getItem('friends'));
     for (let i = 0; i < a.length; i++) {
 
@@ -92,7 +93,7 @@ function selectFriend(username = null) {
                 h1.innerHTML = escapeHtml(a[i].username);
                 selected = a[i].username;
 
-                for(let f of a) {
+                for (let f of a) {
 
                     if (f.username === username) {
 
@@ -169,7 +170,7 @@ function appendChat(username, message) {
 
 async function sendMessage(to, message) {
 
-    if(to === null) {
+    if (to === null) {
         return toast('No receiver specified');
     }
 
@@ -185,7 +186,7 @@ async function sendMessage(to, message) {
 
     let a = JSON.parse(window.localStorage.getItem('friends'));
 
-    for (let i = 0; i <a.length; i++) {
+    for (let i = 0; i < a.length; i++) {
 
         if (a[i].username === to) {
             friend = a[i];
@@ -200,13 +201,13 @@ async function sendMessage(to, message) {
     }
 
     openpgp.encrypt(options)
-    .then(ciphertext => {
-        m.message = btoa(ciphertext.data); // '-----BEGIN PGP MESSAGE ... END PGP MESSAGE-----'
-    })
-    .then(() => {
-        socket.emit('message', m);
-        appendChat(m.from, message);
-    });
+        .then(ciphertext => {
+            m.message = btoa(ciphertext.data); // '-----BEGIN PGP MESSAGE ... END PGP MESSAGE-----'
+        })
+        .then(() => {
+            socket.emit('message', m);
+            appendChat(m.from, message);
+        });
 
 }
 
@@ -229,7 +230,7 @@ function notify(title, body = undefined) {
 
 function setDarkTheme(b) {
 
-    if(b) {
+    if (b) {
 
         // --backgound-color-main: #1f1f1f;
         // --background-color-secondary: #333;
@@ -257,7 +258,7 @@ function setDarkTheme(b) {
         let s = JSON.parse(window.localStorage.getItem('settings'));
         s.dark = true;
         window.localStorage.setItem('settings', JSON.stringify(s));
-        
+
 
     } else {
 
@@ -294,12 +295,12 @@ function setDarkTheme(b) {
 
 function escapeHtml(unsafe) {
     return unsafe
-         .replace(/&/g, "&amp;")
-         .replace(/</g, "&lt;")
-         .replace(/>/g, "&gt;")
-         .replace(/"/g, "&quot;")
-         .replace(/'/g, "&#039;");
- }
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
 
 /*
  *  Event listeners
@@ -313,7 +314,7 @@ document.getElementById('send').onclick = () => {
         return;
     }
 
-    if(selected === null) {
+    if (selected === null) {
         return toast('No receiver specified');
     }
 
@@ -469,31 +470,31 @@ document.getElementById('theme-switch').onclick = e => {
 selectFriend();
 renderChat(selected);
 
-socket.on('message', async(data) => {
+socket.on('message', async (data) => {
 
     const passphrase = window.localStorage.getItem('pgp.passphrase');
     const privKeyObj = openpgp.key.readArmored(window.localStorage.getItem('pgp.private')).keys[0];
     await privKeyObj.decrypt(passphrase);
 
     const options = {
-        message: openpgp.message.readArmored(atob(data.message)),     // parse armored message
-        privateKeys: [privKeyObj]                            // for decryption
+        message: openpgp.message.readArmored(atob(data.message)), // parse armored message
+        privateKeys: [privKeyObj] // for decryption
     }
 
     openpgp.decrypt(options).then(plaintext => {
         //console.log(plaintext.data);
-        if(data.from === selected) {
+        if (data.from === selected) {
             appendChat(data.from, plaintext.data);
-        } 
+        }
         Encm.sessionStoreMessage(data.from, data.from, plaintext.data);
         notify(`New message from ${data.from}`, plaintext.data);
-        return plaintext.data; 
+        return plaintext.data;
     });
 
     if (data.from !== selected) {
 
         const fl = JSON.parse(localStorage.getItem('friends'));
-        
+
         for (let f of fl) {
 
             if (f.username === data.from) {

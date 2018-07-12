@@ -18,7 +18,6 @@
     "orientation": "portrait",
     "scope": "/",
     "lang": "en-US",
-    "version": 1.0,
     "theme_color": "#0088ff",
-    "description": "End tp end ecrypted messages over websockets"
+    "description": "End to end ecrypted messages over websockets"
 }

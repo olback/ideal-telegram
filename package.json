@@ -1,6 +1,5 @@
 {
     "name": "encm",
-    "version": "1.0.0",
     "description": "",
     "main": "index.js",
     "dependencies": {
@@ -20,5 +19,6 @@
     "repository": {
         "type": "git",
         "url": "https://github.com/olback/ws-openpgp-chat.git"
-    }
+    },
+    "version": "1.0.1"
 }

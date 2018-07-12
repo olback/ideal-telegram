@@ -15,7 +15,7 @@ let server = app.listen(env.PORT || 5000, () => {
 
 // Static files
 app.use(express.static('client'));
-app.use(express.static('node_modules/openpgp/dist/'));
+app.use('/js/', express.static('node_modules/openpgp/dist/'));
 
 // Socket setup
 let io = socket(server);

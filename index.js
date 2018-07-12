@@ -15,6 +15,7 @@ let server = app.listen(env.PORT || 5000, () => {
 
 // Static files
 app.use(express.static('client'));
+app.use('/docs/', express.static('docs/'));
 app.use('/js/', express.static('node_modules/openpgp/dist/'));
 
 // Socket setup
@@ -80,7 +81,7 @@ io.on('connection', socket => {
 
             io.sockets.connected[clients[data.to].socket].emit('typing', data);
 
-            console.log(`${data.from} is typing to ${data.to}`);
+            // console.log(`${data.from} is typing to ${data.to}`);
 
         }
 

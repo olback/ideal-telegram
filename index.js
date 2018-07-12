@@ -73,6 +73,19 @@ io.on('connection', socket => {
 
     });
 
+    socket.on('typing', data => {
+
+        // console.log('Sending: ' + data.message + ' to ' + data.to);
+        if (clients[data.to]) {
+
+            io.sockets.connected[clients[data.to].socket].emit('typing', data);
+
+            console.log(`${data.from} is typing to ${data.to}`);
+
+        }
+
+    });
+
     socket.on('disconnect', () => {
 
         for (let name in clients) {
@@ -88,10 +101,5 @@ io.on('connection', socket => {
         }
 
     });
-
-
-    // socket.on('typing', name => {
-    //     socket.broadcast.emit('typing', name);
-    // });
 
 })

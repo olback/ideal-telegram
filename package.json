@@ -1,6 +1,6 @@
 {
-    "name": "encm",
-    "description": "",
+    "name": "ws-openpgp-chat",
+    "description": "A websockets chat with e2e encrypted messages.",
     "main": "index.js",
     "dependencies": {
         "express": "^4.16.3",
@@ -8,17 +8,18 @@
         "socket.io": "^2.1.1"
     },
     "devDependencies": {
-        "nodemon": "^1.17.5"
+        "nodemon": "^1.17.5",
+        "semver": "^5.5.0"
     },
     "scripts": {
         "start": "node index.js",
         "dev": "node_modules/.bin/nodemon index.js"
     },
     "author": "olback",
-    "license": "MIT",
+    "license": "AGPL-3.0",
     "repository": {
         "type": "git",
         "url": "https://github.com/olback/ws-openpgp-chat.git"
     },
-    "version": "1.0.3"
+    "version": "1.0.4"
 }

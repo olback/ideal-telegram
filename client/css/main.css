@@ -53,7 +53,8 @@ body {
     padding: 0;
     margin: 0;
     /* background-color: var(--background-color-secondary); */
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    /* font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; */
+    font-family: Arial, Helvetica, sans-serif;
     background-color: var(--background-color-main);
 }
 
@@ -121,7 +122,7 @@ h1 {
     border-bottom: 1px solid var(--border-color);
 }
 
-.chat-empty {
+.chat-info {
     padding: 1em 0;
     color: var(--text-color-primary);
     font-style: italic;
@@ -152,8 +153,8 @@ h1 {
     content: '●';
     padding-left: 5px;
     color: orange;
-    /* animation: blinker 3s ease-in-out infinite; */
-    animation: blinker 2s ease infinite;
+    /* animation: blinker 1s step-start infinite; */
+    animation: blinker 1s linear infinite;
 }
 
 @keyframes blinker {
@@ -185,6 +186,11 @@ input {
     outline: none;
     background-color: var(--input-bcolor);
     color: var(--text-color-primary);
+}
+
+input::placeholder {
+    color: var(--text-color-secondary);
+    font-style: italic;
 }
 
 button {

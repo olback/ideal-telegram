@@ -7,6 +7,7 @@
 const socket = io.connect(window.location.origin);
 
 let online = [];
+let typing = [];
 let selected = null;
 
 /*
@@ -136,7 +137,7 @@ function renderChat(username) {
     co.innerHTML = '';
 
     if (!username || cm === null) {
-        co.innerHTML = '<div class="chat-empty">No messages</div>';
+        co.innerHTML = '<div class="chat-info">No messages</div>';
         return;
     }
 
@@ -156,7 +157,7 @@ function appendChat(username, message) {
 
     const co = document.getElementById('chat-output');
 
-    if (co.children.length === 1 && co.children[0].innerText === 'No messages') {
+    if (co.children.length === 1 && co.children[0].innerText === 'No messages' && co.children[0].classList.contains('chat-info')) {
         co.innerHTML = '';
     }
 
@@ -223,7 +224,7 @@ function notify(title, body = undefined) {
                 });
             });
             // Play sound
-            new Audio('/sounds/notif.ogg').play();
+            new Audio('/audio/notif.ogg').play();
         }
     });
 }
@@ -329,8 +330,41 @@ document.getElementById('new-message').onkeypress = e => {
     if (e.code === 'Enter') {
 
         document.getElementById('send').onclick();
+        document.getElementById('send').focus();
 
     }
+}
+
+document.getElementById('new-message').onfocus = () => {
+
+    if (selected !== null) {
+
+        let m = {
+            to: selected,
+            from: window.localStorage.getItem('username'),
+            typing: true
+        }
+
+        socket.emit('typing', m);
+
+    }
+
+}
+
+document.getElementById('new-message').onblur = () => {
+
+    if (selected !== null) {
+
+        let m = {
+            to: selected,
+            from: window.localStorage.getItem('username'),
+            typing: false
+        }
+
+        socket.emit('typing', m);
+
+    }
+
 }
 
 document.getElementById('open-delete').onclick = () => {
@@ -504,6 +538,27 @@ socket.on('message', async (data) => {
 
         }
 
+    }
+
+});
+
+socket.on('typing', data => {
+
+    const i = document.getElementById('new-message');
+
+    if (data.typing) {
+        // i.placeholder = `${data.from} is typing...`;
+        typing.push(data.from);
+    } else {
+        // i.placeholder = 'Message...';
+        let index = typing.indexOf(data.from);
+        if(index >= 0) typing.splice(index, 1);
+    }
+
+    if (typing.length > 0) {
+        i.placeholder = `${typing.join(', ')} is typing...`;
+    } else {
+        i.placeholder = 'Message...'
     }
 
 });

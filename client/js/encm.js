@@ -2,6 +2,8 @@
  *  encm © 2018
  */
 
+'use strict';
+
 class Encm {
 
     static addFriend(username, public_key) {

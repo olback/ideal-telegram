@@ -3,6 +3,7 @@
  */
 
 /* Light theme */
+
 :root {
     --primary-color: #08f;
     --background-color-main: #fff;
@@ -17,6 +18,7 @@
 }
 
 /* Dark theme */
+
 /* :root {
     --backgound-color-main: #1f1f1f;
     --background-color-secondary: #333;
@@ -97,7 +99,8 @@ h1 {
     background-color: var(--background-color-secondary);
 }
 
-#chat-output, #friends-list {
+#chat-output,
+#friends-list {
     /* min-height: 300px; */
     height: 500px;
     overflow-y: auto;
@@ -110,7 +113,8 @@ h1 {
     border-top: 1px solid var(--border-color);
 }
 
-.message, .friend {
+.message,
+.friend {
     padding: 1em 0;
     transition: 0.2s color ease-in-out;
     color: var(--text-color-primary);
@@ -144,6 +148,20 @@ h1 {
     color: var(--text-color-primary-hover);
 }
 
+.friend.unread::after {
+    content: '●';
+    padding-left: 5px;
+    color: orange;
+    /* animation: blinker 3s ease-in-out infinite; */
+    animation: blinker 2s ease infinite;
+}
+
+@keyframes blinker {
+    50% {
+        opacity: 0;
+    }
+}
+
 .message>span {
     font-weight: bold;
     color: var(--primary-color);
@@ -153,7 +171,8 @@ h1 {
     content: ': ';
 }
 
-.message:last-of-type, .friend:last-of-type {
+.message:last-of-type,
+.friend:last-of-type {
     border-bottom: none;
 }
 
@@ -215,7 +234,8 @@ nav>i:hover {
 dialog {
     background-color: var(--dialog-background-color);
     border: none;
-    color: var(--text-color-primary);
+    /* color: var(--text-color-primary); */
+    color: #ddd;
     position: fixed;
     bottom: 30px;
     border-radius: 5px;
@@ -225,7 +245,9 @@ dialog {
     line-height: 1.4em;
 }
 
-#modal, #import, #delete-friend {
+#modal,
+#import,
+#delete-friend {
     display: none;
     position: fixed;
     top: 50%;
@@ -235,10 +257,12 @@ dialog {
     width: 400px;
     max-width: 90%;
     border: 1px solid var(--border-color);
-    box-shadow: 0px 0px 20px 0px rgba(0,0,0,0.5);
+    box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.5);
 }
 
-#modal>p, #import>p, #delete-friend>p {
+#modal>p,
+#import>p,
+#delete-friend>p {
     padding: 1em;
     max-width: calc(400px - 2em);
 }
@@ -253,7 +277,8 @@ dialog {
     main {
         margin-top: 0;
     }
-    div.chat, div.friends {
+    div.chat,
+    div.friends {
         float: none;
         max-width: 600px;
     }
@@ -266,25 +291,29 @@ dialog {
 }
 
 @media all and (max-height: 900px) {
-    #chat-output, #friends-list {
+    #chat-output,
+    #friends-list {
         height: 500px;
     }
 }
 
 @media all and (max-height: 800px) {
-    #chat-output, #friends-list {
+    #chat-output,
+    #friends-list {
         height: 400px;
     }
 }
 
 @media all and (max-height: 700px) {
-    #chat-output, #friends-list {
+    #chat-output,
+    #friends-list {
         height: 360px;
     }
 }
 
 @media all and (max-height: 600px) {
-    #chat-output, #friends-list {
+    #chat-output,
+    #friends-list {
         height: 290px;
     }
 }

@@ -2,7 +2,8 @@
  *  encm © 2018
  */
 
-// const socket = io.connect('https://chat.olback.net');
+'use strict';
+
 const socket = io.connect(window.location.origin);
 
 let online = [];
@@ -51,17 +52,26 @@ function friendsList(username = null) {
     for (let i = 0; i < a.length; i++) {
 
         if (a[i].username === username) {
-            if (online.indexOf(a[i].username) > -1) {
+            if (online.indexOf(a[i].username) >= 0) {
                 fl.innerHTML += `<div class="friend active online">${escapeHtml(a[i].username)}</div>`;
             } else {
                 fl.innerHTML += `<div class="friend active">${escapeHtml(a[i].username)}</div>`;
             }
         } else {
             // fl.innerHTML += `<div onclick="selectFriend('${a[i].username}')"class="friend">${a[i].username}</div>`;
-            if (online.indexOf(a[i].username) > -1) {
-                fl.innerHTML += `<div class="friend online" onclick="selectFriend('${escapeHtml(a[i].username)}')">${escapeHtml(a[i].username)}</div>`;
+            if (online.indexOf(a[i].username) >= 0) {
+                if (a[i].unread) {
+                    fl.innerHTML += `<div class="friend online unread" onclick="selectFriend('${escapeHtml(a[i].username)}')">${escapeHtml(a[i].username)}</div>`;
+                } else {
+                    fl.innerHTML += `<div class="friend online" onclick="selectFriend('${escapeHtml(a[i].username)}')">${escapeHtml(a[i].username)}</div>`;
+                }
             } else {
-                fl.innerHTML += `<div class="friend" onclick="selectFriend('${escapeHtml(a[i].username)}')">${escapeHtml(a[i].username)}</div>`;
+                // fl.innerHTML += `<div class="friend" onclick="selectFriend('${escapeHtml(a[i].username)}')">${escapeHtml(a[i].username)}</div>`;
+                if (a[i].unread) {
+                    fl.innerHTML += `<div class="friend unread" onclick="selectFriend('${escapeHtml(a[i].username)}')">${escapeHtml(a[i].username)}</div>`;
+                } else {
+                    fl.innerHTML += `<div class="friend" onclick="selectFriend('${escapeHtml(a[i].username)}')">${escapeHtml(a[i].username)}</div>`;
+                }
             }
         }
     }
@@ -81,6 +91,18 @@ function selectFriend(username = null) {
                 friendsList(a[i].username);
                 h1.innerHTML = escapeHtml(a[i].username);
                 selected = a[i].username;
+
+                for(let f of a) {
+
+                    if (f.username === username) {
+
+                        f.unread = false;
+                        localStorage.setItem('friends', JSON.stringify(a));
+
+                    }
+
+                }
+
             }
 
         }
@@ -132,6 +154,10 @@ function renderChat(username) {
 function appendChat(username, message) {
 
     const co = document.getElementById('chat-output');
+
+    if (co.children.length === 1 && co.children[0].innerText === 'No messages') {
+        co.innerHTML = '';
+    }
 
     co.innerHTML += `<div class="message"><span>${escapeHtml(username)}</span>${escapeHtml(message)}</div>`;
     co.scrollTo({
@@ -342,7 +368,7 @@ document.getElementById('open-delete').onclick = () => {
 
     }
 
-    i.onkeyup = (e) => {
+    i.onkeyup = () => {
 
         if (i.value !== '') {
             b.innerHTML = 'Delete';
@@ -365,7 +391,7 @@ document.getElementById('open-export-json').onclick = () => {
 
 }
 
-document.getElementById('open-import-json').onclick = () => {
+document.getElementById('add-friend').onclick = () => {
 
     const m = document.getElementById('import');
     const i = document.getElementById('import-json');
@@ -406,7 +432,7 @@ document.getElementById('open-import-json').onclick = () => {
 
     }
 
-    i.onkeyup = (e) => {
+    i.onkeyup = () => {
 
         if (i.value !== '') {
             b.innerHTML = 'Import';
@@ -419,7 +445,6 @@ document.getElementById('open-import-json').onclick = () => {
     m.style.display = 'block';
 
 }
-document.getElementById('add-friend').onclick = document.getElementById('open-import-json').onclick;
 
 document.getElementById('theme-switch').onclick = e => {
 
@@ -457,11 +482,28 @@ socket.on('message', async(data) => {
 
     openpgp.decrypt(options).then(plaintext => {
         //console.log(plaintext.data);
-        appendChat(data.from, plaintext.data);
+        if(data.from === selected) {
+            appendChat(data.from, plaintext.data);
+        } 
         Encm.sessionStoreMessage(data.from, data.from, plaintext.data);
         notify(`New message from ${data.from}`, plaintext.data);
         return plaintext.data; 
-    })
+    });
+
+    if (data.from !== selected) {
+
+        const fl = JSON.parse(localStorage.getItem('friends'));
+        
+        for (let f of fl) {
+
+            if (f.username === data.from) {
+                f.unread = true;
+                localStorage.setItem('friends', JSON.stringify(fl));
+            }
+
+        }
+
+    }
 
 });
 
@@ -510,11 +552,6 @@ if ('serviceWorker' in navigator) {
     });
 }
 
-// Make sure to let the server know we're alive
-setInterval(() => {
-    socket.emit('login', window.localStorage.getItem('username'));
-}, 1E3) // 6E4
-
 // Handle theme settings
 if (window.localStorage.getItem('settings') === null) {
 
@@ -529,3 +566,9 @@ if (window.localStorage.getItem('settings') === null) {
     setDarkTheme(s.dark);
 
 }
+
+// Make sure to let the server know we're alive
+socket.emit('login', window.localStorage.getItem('username'));
+setInterval(() => {
+    socket.emit('login', window.localStorage.getItem('username'));
+}, 1E3) // 6E4

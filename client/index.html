@@ -9,7 +9,7 @@
         <link rel="manifest" href="/manifest.json" />
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous" />
         <script src="/socket.io/socket.io.js"></script>
-        <script src="/js/openpgp.min.js"></script>
+        <script src="/openpgp.min.js"></script>
         <script src="js/encm.min.js"></script>
         <title>Encrypted Messages</title>
     </head>
@@ -41,7 +41,6 @@
         </main>
 
         <nav>
-            <i class="fas fa-file-import" id="open-import-json"></i>
             <i class="fas fa-file-export" id="open-export-json"></i>
             <i class="fas fa-trash-alt" id="open-delete"></i>
             <i class="fas fa-moon" id="theme-switch"></i>
@@ -56,7 +55,7 @@
         </div>
 
         <div id="import">
-            <h1>Import</h1>
+            <h1>Add friend</h1>
             <p><input type="text" id="import-json" placeholder="{username: &lt;name&gt;, public_key: &lt;public_key&gt;}"></p>
             <button id="import-json-button">Close</button>
         </div>

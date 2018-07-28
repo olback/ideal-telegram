@@ -294,7 +294,7 @@ function setDarkTheme(b) {
 
 }
 
-function escapeChat(unsafe, allowed = ['em', 'i', 'strong', 'b']) {
+function escapeChat(unsafe, allowed = ['b', 'i', 'strong', 'em']) {
 
     // return unsafe
     // .replace(/&/g, "&amp;")

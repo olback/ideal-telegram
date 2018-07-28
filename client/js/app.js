@@ -161,7 +161,7 @@ function appendChat(username, message) {
         co.innerHTML = '';
     }
 
-    co.innerHTML += `<div class="message"><span>${escapeHtml(username)}</span>${escapeHtml(message)}</div>`;
+    co.innerHTML += `<div class="message"><span>${escapeHtml(username)}</span>${escapeChat(message)}</div>`;
     co.scrollTo({
         top: co.scrollHeight + 100,
         behavior: 'smooth'
@@ -294,13 +294,45 @@ function setDarkTheme(b) {
 
 }
 
+function escapeChat(unsafe, allowed = ['em', 'i', 'strong', 'b']) {
+
+    // return unsafe
+    // .replace(/&/g, "&amp;")
+    // .replace(/</g, "&lt;")
+    // .replace(/>/g, "&gt;")
+    // .replace(/"/g, "&quot;")
+    // .replace(/'/g, "&#039;")
+    // .replace(/(https?:\/\/[^\s]+)/g, url => {
+    //     return '<a href="' + url + '">' + url + '</a>';
+    // });
+
+    let str =  escapeHtml(unsafe)
+    // .replace(/(https?:\/\/[^\s]+)/g, url => {
+    .replace(/([a-zA-Z]{2,10}:\/\/[^\s]+)/g, url => {
+        return '<a target="_blank" rel="noopener" href="' + url + '">' + url + '</a>';
+    });
+
+    for (let c of allowed) {
+
+        const reg1 = new RegExp(`&lt;${c}&gt;`, 'g');
+        str = str.replace(reg1, `<${c}>`);
+
+        const reg2 = new RegExp(`&lt;/${c}&gt;`, 'g');
+        str = str.replace(reg2, `</${c}>`);
+
+    }
+
+    return str;
+
+}
+
 function escapeHtml(unsafe) {
     return unsafe
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 }
 
 /*
@@ -330,7 +362,7 @@ document.getElementById('new-message').onkeypress = e => {
     if (e.code === 'Enter') {
 
         document.getElementById('send').onclick();
-        document.getElementById('send').focus();
+        // document.getElementById('send').focus();
 
     }
 }
@@ -552,7 +584,7 @@ socket.on('typing', data => {
     } else {
         // i.placeholder = 'Message...';
         let index = typing.indexOf(data.from);
-        if(index >= 0) typing.splice(index, 1);
+        if (index >= 0) typing.splice(index, 1);
     }
 
     if (typing.length > 0) {
